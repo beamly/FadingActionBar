@@ -309,7 +309,17 @@ public abstract class FadingActionBarHelperBase {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
         }
     };
+    
     private int mLastScrollPosition;
+    private OnAlphaChangeListener mOnAlphaChangeListener;
+
+    public static interface OnAlphaChangeListener {
+    	void onAlphaChanged(int alpha);
+    }
+    
+    public void setOnAlphaChangeListener(OnAlphaChangeListener l) {
+    	mOnAlphaChangeListener = l;
+    }
 
     private void onNewScroll(int scrollPosition) {
         if (isActionBarNull()) {
@@ -330,7 +340,12 @@ public abstract class FadingActionBarHelperBase {
         float ratio = (float) Math.min(Math.max(scrollPosition, 0), headerHeight) / headerHeight;
         int newAlpha = (int) (ratio * 255);
         mActionBarBackgroundDrawable.setAlpha(newAlpha);
-	}
+        if (mOnAlphaChangeListener != null) {
+        	mOnAlphaChangeListener.onAlphaChanged(newAlpha);
+        }
+
+        addParallaxEffect(scrollPosition);
+    }
 
     private void addParallaxEffect(int scrollPosition) {
         float damping = mUseParallax ? 0.5f : 1.0f;
