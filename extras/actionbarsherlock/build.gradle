@@ -1,12 +1,13 @@
 apply plugin: 'android-library'
 
 dependencies {
-    compile project(':library')
+    compile project(':FadingActionBar/library')
     compile "com.android.support:support-v4:[19.0,)"
-    compile ("com.actionbarsherlock:actionbarsherlock:[4.4,)@aar") {
-        // Need to specifically exclude this as it is specified in ActionBarSherlock pom
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
+    compile "com.actionbarsherlock:actionbarsherlock:4.4.0@aar"
+}
+
+repositories {
+    mavenCentral()
 }
 
 android {
@@ -22,4 +23,4 @@ android {
     }
 }
 
-apply from: '../../maven_push.gradle'
+//apply from: '../../maven_push.gradle'
